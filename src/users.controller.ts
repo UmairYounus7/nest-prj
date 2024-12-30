@@ -2,12 +2,13 @@ import {
     Controller, Get, Req,
     Param, Query, Body,
     Post, HttpCode, HttpStatus,
-    Res, Header, Redirect, Headers
+    Res, Header, Redirect, Headers, Inject
 } from "@nestjs/common"
 import { of } from 'rxjs'
 import { Request, response, Response } from 'express'
 import { parseArgs } from "util"
-
+import { UserStore } from "./users.store"
+import { Config } from './config'
 
 interface VideoParams {
     id: number,
@@ -18,7 +19,15 @@ interface VideoParams {
 
 @Controller('/users')
 export class UsersController {
+    //    constructor(@Inject(UserStore) private store: UserStore) {
+    // optional injestion by decorator
+    ////    constructor(@Optional private store: UserStore) {
 
+    //    constructor(private config: Config) {
+
+    constructor(private store: UserStore) {
+        console.log(this.store)
+    }
 
     @Get('/profile')
     @HttpCode(HttpStatus.NO_CONTENT)
@@ -92,3 +101,5 @@ export class UsersController {
     //HostParam , IP  route (host: 'app.domian.com')
 }
 
+// dynamic module
+// register , forRoot , forFeature
